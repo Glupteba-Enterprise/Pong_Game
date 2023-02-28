@@ -1,19 +1,29 @@
-"""pong game"""
-import tkinter
-import random
-import time
+"""pong gmaing"""
+import tkinter as tk
 
+# defining variables
+gui_title = "Glupteba Pong"
+gui_label = "The Big Glup"
+gui_width = 500
+gui_height = 500
 
-class Gui():
-    pass
+# creating gui instance
+gui_main = tk.Tk()
 
+### getting the screen center
 
-class Ball():
-    pass
+# getting screen dimensions
+screen_width = gui_main.winfo_screenwidth()
+screen_height = gui_main.winfo_screenheight()
+# calculating the screen center
+gui_x = int(screen_width / 2 - gui_width / 2)
+gui_y = int(screen_height / 2 - gui_height / 2)
 
+# setting gui variables
+gui_main.title(gui_title)
+gui_main.geometry(f'{gui_width}x{gui_height}+{gui_x}+{gui_y}')  # width x height ± x ± y
+_gui_label = tk.Label(gui_main, text=gui_label)
+_gui_label.pack()
 
-class Paddle():
-    pass
-
-
-"""idfk"""
+# run the gui
+gui_main.mainloop()
