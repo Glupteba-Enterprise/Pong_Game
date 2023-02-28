@@ -1,6 +1,5 @@
 """pong gmaing"""
 import tkinter as tk
-from tkinter import *
 
 # defining variables
 gui_title = "Glupteba Pong"
@@ -19,8 +18,6 @@ screen_height = gui_main.winfo_screenheight()
 # calculating the screen center
 gui_x = int(screen_width / 2 - gui_width / 2)
 gui_y = int(screen_height / 2 - gui_height / 2)
-
-
 
 # setting gui variables
 gui_main.title(gui_title)
