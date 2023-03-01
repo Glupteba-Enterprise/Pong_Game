@@ -23,9 +23,13 @@ gui_y = int(screen_height / 2 - gui_height / 2)
 def onKeyPress(event):
     """Our function that we later call in the KeyPress event listener.
 
-    Note that when calling this function, filling in the 'event' field is not necessary. We should only be calling this
-    function once in the 'bind()' gui function regardless.
+    Note that when calling this function, filling in the 'event' field is
+    not necessary. We should only be calling this function once in the
+    'bind()' gui function regardless.
+
     In our canvas, '0, 0' is the top left coordinates, '1, 1' is the bottom right coordinates.
+    Means that when the left paddle moves down it coordinates are INCREASING
+    Means that when the left paddle moves up it coordinates are DECREASING
     """
 
     # destroy the "press any key to start" label
@@ -33,35 +37,40 @@ def onKeyPress(event):
 
     ypos_paddle1 = float(split_place_info(paddle_1))
     ypos_paddle2 = float(split_place_info(paddle_2))
-    # handle paddle movements
+    # use 'w' and 's' to move the left paddle up and down
     if event.char == 'w':
         if ypos_paddle1 > 0.075:
             paddle_1.place(relx=0, rely=ypos_paddle1 - 0.025, anchor=CENTER)
     elif event.char == 's':
         if ypos_paddle1 < 0.925:
             paddle_1.place(relx=0, rely=ypos_paddle1 + 0.025, anchor=CENTER)
-    # idk what the arrow keys are, tried 'up' and 'down'
-    if event.char == '??':
+    # use 'o' and 'l' to move the right paddle down and up
+    if event.char == 'o':
         if ypos_paddle2 > 0.075:
             paddle_2.place(relx=0, rely=ypos_paddle2 - 0.025, anchor=CENTER)
-    if event.char == '??':
+    if event.char == 'l':
         if ypos_paddle2 < 0.925:
             paddle_2.place(relx=0, rely=ypos_paddle2 + 0.025, anchor=CENTER)
+
+
 def split_place_info(canvas):
     """Returns the canvas rely
 
     The place_info func returns a long string of unneeded info.
     We split this string on ',' and then get the fourth index in the new list.
     This returns "'rely': '0.5'", with 0.5 being the actual rely number.
-    We then iterate through this string to create a new string comprising of only digits and decimal points.
+    We then iterate through this string to create a new string comprising of
+    only digits and decimal points.
 
-    There is probably a better way to do this, especially the last part, dont glup me on this one ok.
+    There is probably a better way to do this, especially the last part,
+    dont glup me on this one ok.
     """
     return_string = ''
-    for i in canvas.place_info().__str__().split(',')[4]:
-        if i.isdigit() == True or i.__eq__('.'):
-            return_string += i
+    for char in canvas.place_info().__str__().split(',')[4]:
+        if char.isdigit() is True or char.__eq__('.'):
+            return_string += char
     return return_string
+
 
 # setting gui variables
 gui_main.title(gui_title)
