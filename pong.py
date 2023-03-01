@@ -1,5 +1,7 @@
 """pong gmaing"""
 import tkinter as tk
+from tkinter import *
+from tkinter.ttk import *
 
 # defining variables
 gui_title = "Glupteba Pong"
@@ -19,20 +21,51 @@ screen_height = gui_main.winfo_screenheight()
 gui_x = int(screen_width / 2 - gui_width / 2)
 gui_y = int(screen_height / 2 - gui_height / 2)
 
+def onKeyPress(event):
+    """Our function that we later call in the KeyPress event listener.
+
+    Note that when calling this function, filling in the 'event' field is not necessary. We should only be calling this
+    function once in the 'bind()' gui function regardless.
+    In our canvas, '0, 0' is the top left coordinates, '1, 1' is the bottom right coordinates.
+    """
+    gui_label.destroy()
+    ypos_paddle1 = float(split_place_info(paddle_1))
+    if event.char == 'w':
+        if ypos_paddle1 > 0:
+            paddle_1.place(relx=0, rely=ypos_paddle1 - 0.025, anchor=CENTER)
+    elif event.char == 's':
+        if ypos_paddle1 < 1:
+            paddle_1.place(relx=0, rely=ypos_paddle1 + 0.025, anchor=CENTER)
+
+
+def split_place_info(canvas):
+    """Returns the canvas rely
+
+    The place_info func returns a long string of unneeded info.
+    We split this string on ',' and then get the fourth index in the new list.
+    This returns "'rely': '0.5'", with 0.5 being the actual rely number.
+    We then iterate through this string to create a new string comprising of only digits and decimal points.
+
+    There is probably a better way to do this, especially the last part, dont glup me on this one ok.
+    """
+    return_string = ''
+    for i in canvas.place_info().__str__().split(',')[4]:
+        if i.isdigit() == True or i.__eq__('.'):
+            return_string += i
+    return return_string
+
 # setting gui variables
 gui_main.title(gui_title)
 gui_main.geometry(f'{gui_width}x{gui_height}+{gui_x}+{gui_y}')  # width x height ± x ± y
+gui_main.configure(bg='black')
+gui_label = tk.Label(gui_main, text='Glup Any Key To Start!', bg='black', fg='white')
+gui_label.place(relx=0.5, rely=0.5, anchor='center')
+gui_label.pack(expand=1)
 
-# key press detector. will be used for 'press any key to start game'
-def onKeyPress(event):
-    """sets the 'on key press' text"""
-    gui_text_var.insert('end', f'You pressed {(event.char, )}\n')
-
-# shows text on screen
-gui_text_var = tk.Text(gui_main, background='black', foreground='white', font=('Comic Sans MS', 12))
-gui_text_var.pack()
-
+paddle_1 = tk.Canvas(gui_main, bg='white', height=100, width=10)
+paddle_1.place(relx=0, rely=0.5, anchor=CENTER)
 # listens for any 'KeyPress' event
 gui_main.bind('<KeyPress>', onKeyPress)
+
 # run the gui
 gui_main.mainloop()
