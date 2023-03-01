@@ -1,7 +1,6 @@
 """pong gmaing"""
 import tkinter as tk
 from tkinter import *
-from tkinter.ttk import *
 
 # defining variables
 gui_title = "Glupteba Pong"
@@ -28,16 +27,26 @@ def onKeyPress(event):
     function once in the 'bind()' gui function regardless.
     In our canvas, '0, 0' is the top left coordinates, '1, 1' is the bottom right coordinates.
     """
+
+    # destroy the "press any key to start" label
     gui_label.destroy()
+
     ypos_paddle1 = float(split_place_info(paddle_1))
+    ypos_paddle2 = float(split_place_info(paddle_2))
+    # handle paddle movements
     if event.char == 'w':
-        if ypos_paddle1 > 0:
+        if ypos_paddle1 > 0.075:
             paddle_1.place(relx=0, rely=ypos_paddle1 - 0.025, anchor=CENTER)
     elif event.char == 's':
-        if ypos_paddle1 < 1:
+        if ypos_paddle1 < 0.925:
             paddle_1.place(relx=0, rely=ypos_paddle1 + 0.025, anchor=CENTER)
-
-
+    # idk what the arrow keys are, tried 'up' and 'down'
+    if event.char == '??':
+        if ypos_paddle2 > 0.075:
+            paddle_2.place(relx=0, rely=ypos_paddle2 - 0.025, anchor=CENTER)
+    if event.char == '??':
+        if ypos_paddle2 < 0.925:
+            paddle_2.place(relx=0, rely=ypos_paddle2 + 0.025, anchor=CENTER)
 def split_place_info(canvas):
     """Returns the canvas rely
 
@@ -64,6 +73,10 @@ gui_label.pack(expand=1)
 
 paddle_1 = tk.Canvas(gui_main, bg='white', height=100, width=10)
 paddle_1.place(relx=0, rely=0.5, anchor=CENTER)
+
+paddle_2 = tk.Canvas(gui_main, bg='white', height=100, width=10)
+paddle_2.place(relx=1, rely=0.5, anchor=CENTER)
+
 # listens for any 'KeyPress' event
 gui_main.bind('<KeyPress>', onKeyPress)
 
