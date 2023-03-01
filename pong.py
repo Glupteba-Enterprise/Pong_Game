@@ -1,4 +1,5 @@
 """pong gmaing"""
+# TODO: BALL PHYSICS/VECTORS
 import tkinter as tk
 from tkinter import *
 
