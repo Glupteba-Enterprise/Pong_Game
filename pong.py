@@ -21,56 +21,59 @@ screen_height = gui_main.winfo_screenheight()
 gui_x = int(screen_width / 2 - gui_width / 2)
 gui_y = int(screen_height / 2 - gui_height / 2)
 
+
 def onKeyPress(event):
-    """Our function that we later call in the KeyPress event listener.
+    """Moves paddles when keys pressed.
 
-    Note that when calling this function, filling in the 'event' field is
-    not necessary. We should only be calling this function once in the
-    'bind()' gui function regardless.
+    Arguments:
+    event: Given by .bind (do not enter yourself), the key that has been pressed.
+    Returns:
+    Nope :P
 
-    In our canvas, '0, 0' is the top left coordinates, '1, 1' is the bottom right coordinates.
-    Means that when the left paddle moves down it coordinates are INCREASING
-    Means that when the left paddle moves up it coordinates are DECREASING
+    In our canvas, (0, 0) is the top left, (1, 1) is the bottom right.
+    WS moves left paddle, up/down keys moves right padde (up/down movement only)
+    Also removes introduction label.
     """
 
     # destroy the "press any key to start" label
     gui_label.destroy()
 
-    ypos_paddle1 = float(split_place_info(paddle_1))
-    ypos_paddle2 = float(split_place_info(paddle_2))
-    # use 'w' and 's' to move the left paddle up and down
-    if event.char == 'w':
+    # find current position of paddles
+    ypos_paddle1 = get_relative_coordinates(paddle_1, "y")
+    ypos_paddle2 = get_relative_coordinates(paddle_2, "y")
+
+    # moves paddles
+    if event.keysym == 'w':  # left paddle up
         if ypos_paddle1 > 0.075:
             paddle_1.place(relx=0, rely=ypos_paddle1 - 0.025, anchor=CENTER)
-    elif event.char == 's':
+    elif event.keysym == 's':  # left paddle down
         if ypos_paddle1 < 0.925:
             paddle_1.place(relx=0, rely=ypos_paddle1 + 0.025, anchor=CENTER)
-    # use 'o' and 'l' to move the right paddle down and up
-    if event.char == 'o':
+    # (right paddle is fixed)
+    if event.keysym == 'Up':  # right paddle up
         if ypos_paddle2 > 0.075:
-            paddle_2.place(relx=0, rely=ypos_paddle2 - 0.025, anchor=CENTER)
-    if event.char == 'l':
+            paddle_2.place(relx=1, rely=ypos_paddle2 - 0.025, anchor=CENTER)
+    if event.keysym == 'Down':  # right paddle down
         if ypos_paddle2 < 0.925:
-            paddle_2.place(relx=0, rely=ypos_paddle2 + 0.025, anchor=CENTER)
+            paddle_2.place(relx=1, rely=ypos_paddle2 + 0.025, anchor=CENTER)
 
 
-def split_place_info(canvas):
-    """Returns the canvas rely
+def get_relative_coordinates(canvas, coordinate):
+    """Returns relative y or x value of canvas.
 
-    The place_info func returns a long string of unneeded info.
-    We split this string on ',' and then get the fourth index in the new list.
-    This returns "'rely': '0.5'", with 0.5 being the actual rely number.
-    We then iterate through this string to create a new string comprising of
-    only digits and decimal points.
+      Arguments:
+      canvas: The canvas whose coordinate is being checked. Generally the paddles.
+      coordintate: x or y, the coordinate being checked. Raises an exception if this is not a valid coordinate.
 
-    There is probably a better way to do this, especially the last part,
-    dont glup me on this one ok.
+      Returns:
+      The relative y or value of the canvas (none of the useless stuff the function place_info() has) (a float)
     """
-    return_string = ''
-    for char in canvas.place_info().__str__().split(',')[4]:
-        if char.isdigit() is True or char.__eq__('.'):
-            return_string += char
-    return return_string
+    if coordinate == "x":
+        return float(canvas.place_info()["relx"])
+    elif coordinate == "y":
+        return float(canvas.place_info()["rely"])
+    else:
+        raise Exception("There are only x and y coordinates: input 'x' or 'y' to function get_relative_coordinates")
 
 
 # setting gui variables
