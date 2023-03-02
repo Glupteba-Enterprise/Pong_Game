@@ -2,6 +2,7 @@
 # TODO: BALL PHYSICS/VECTORS
 import tkinter as tk
 from tkinter import *
+import time
 
 # defining variables
 gui_title = "Glupteba Pong"
@@ -35,8 +36,7 @@ def onKeyPress(event):
     Also removes introduction label.
     """
 
-    # destroy the "press any key to start" label
-    gui_label.destroy()
+    startGame()
 
     # find current position of paddles
     ypos_paddle1 = get_relative_coordinates(paddle_1, "y")
@@ -63,7 +63,7 @@ def get_relative_coordinates(canvas, coordinate):
 
       Arguments:
       canvas: The canvas whose coordinate is being checked. Generally the paddles.
-      coordintate: x or y, the coordinate being checked. Raises an exception if this is not a valid coordinate.
+      coordinate: x or y, the coordinate being checked. Raises an exception if this is not a valid coordinate.
 
       Returns:
       The relative y or value of the canvas (none of the useless stuff the function place_info() has) (a float)
@@ -76,13 +76,23 @@ def get_relative_coordinates(canvas, coordinate):
         raise Exception("There are only x and y coordinates: input 'x' or 'y' to function get_relative_coordinates")
 
 
+def startGame():
+    """Starts some game processes"""
+    gui_label.destroy()
+    # ball physics
+    ball_x = 0.5
+    ball_y = 0.5
+    ball = tk.Canvas(gui_main, bg='white', height=50, width=50)
+    ball.place(relx=ball_x, rely=ball_y, anchor=CENTER)
+
+
 # setting gui variables
 gui_main.title(gui_title)
-gui_main.geometry(f'{gui_width}x{gui_height}+{gui_x}+{gui_y}')  # width x height ± x ± y
-gui_main.configure(bg='black')
+gui_canvas = Canvas(gui_main)
+gui_canvas.create_rectangle(400, 400, 1, 1, fill='black')
+gui_canvas.pack()
 gui_label = tk.Label(gui_main, text='Glup Any Key To Start!', bg='black', fg='white')
 gui_label.place(relx=0.5, rely=0.5, anchor='center')
-gui_label.pack(expand=1)
 
 paddle_1 = tk.Canvas(gui_main, bg='white', height=100, width=10)
 paddle_1.place(relx=0, rely=0.5, anchor=CENTER)
