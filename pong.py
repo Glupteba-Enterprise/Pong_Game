@@ -9,7 +9,8 @@ gui_title = "Glupteba Pong"
 gui_text = "The Big Glup"
 gui_width = 500
 gui_height = 500
-
+game_states = ['MENU', 'GAMING']
+game_state = game_states[0]
 # creating gui instance
 gui_main = tk.Tk()
 
@@ -36,7 +37,7 @@ def onKeyPress(event):
     Also removes introduction label.
     """
 
-    startGame()
+    start_game()
 
     # find current position of paddles
     ypos_paddle1 = get_relative_coordinates(paddle_1, "y")
@@ -75,15 +76,13 @@ def get_relative_coordinates(canvas, coordinate):
     else:
         raise Exception("There are only x and y coordinates: input 'x' or 'y' to function get_relative_coordinates")
 
-
-def startGame():
-    """Starts some game processes"""
+def start_game():
+    """Starts the game processes"""
+    global game_state
+    game_state = game_states[1]
     gui_label.destroy()
     # ball physics
-    ball_x = 0.5
-    ball_y = 0.5
-    ball = tk.Canvas(gui_main, bg='white', height=50, width=50)
-    ball.place(relx=ball_x, rely=ball_y, anchor=CENTER)
+    ball = gui_canvas.create_rectangle(10, 10, 50, 50, fill='white')
 
 
 # setting gui variables
