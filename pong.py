@@ -38,7 +38,6 @@ def onKeyPress(event):
     """
 
     start_game()
-
     # find current position of paddles
     ypos_paddle1 = get_relative_coordinates(paddle_1, "y")
     ypos_paddle2 = get_relative_coordinates(paddle_2, "y")
@@ -78,19 +77,21 @@ def get_relative_coordinates(canvas, coordinate):
 
 def start_game():
     """Starts the game processes"""
+    # change game state
     global game_state
     game_state = game_states[1]
+    # destroy menu variable
     gui_label.destroy()
-    # ball physics
-    ball = gui_canvas.create_rectangle(10, 10, 50, 50, fill='white')
-
+    # add game variable
+    middle_line = tk.Canvas(gui_main, bg='white', height=400, width=10)
+    middle_line.place(relx=0.5, rely=0.5, anchor=CENTER)
 
 # setting gui variables
 gui_main.title(gui_title)
 gui_canvas = Canvas(gui_main)
 gui_canvas.create_rectangle(400, 400, 1, 1, fill='black')
 gui_canvas.pack()
-gui_label = tk.Label(gui_main, text='Glup Any Key To Start!', bg='black', fg='white')
+gui_label = tk.Label(gui_main, text='Glup Any Key To Start!', bg='black', fg='green')
 gui_label.place(relx=0.5, rely=0.5, anchor='center')
 
 paddle_1 = tk.Canvas(gui_main, bg='white', height=100, width=10)
@@ -99,6 +100,7 @@ paddle_1.place(relx=0, rely=0.5, anchor=CENTER)
 paddle_2 = tk.Canvas(gui_main, bg='white', height=100, width=10)
 paddle_2.place(relx=1, rely=0.5, anchor=CENTER)
 
+ball = gui_canvas.create_rectangle(10, 10, 50, 50, fill='white')
 # listens for any 'KeyPress' event
 gui_main.bind('<KeyPress>', onKeyPress)
 
